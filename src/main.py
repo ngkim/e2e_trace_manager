@@ -11,13 +11,13 @@ import tornado.ioloop
 import tornado.web
 
 from tornado.ioloop import IOLoop
-from handlers.trace_handler import MainHandler
+from handlers.trace_handler import TraceHandler
 from util.ko_logger import ko_logger as logger
 
 log = logger(tag="E2E Trace Manager", logdir="./log/", loglevel="debug", logConsole=False).get_instance()
 
 application = tornado.web.Application([
-    (r"/", MainHandler, dict(logger=log)),
+    (r"/", TraceHandler, dict(logger=log)),
 ])
 
 def sig_handler(signum, frame):

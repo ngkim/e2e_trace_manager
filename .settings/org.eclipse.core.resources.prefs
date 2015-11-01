@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/e2e_trace_manager.py=utf-8
 encoding//src/main.py=utf-8
+encoding//src/util/db.py=utf-8
+encoding//src/util/db_mng.py=utf-8
 encoding//src/util/ko_logger.py=utf-8
