@@ -1,0 +1,4 @@
+log
+*.log
+*.e2e
+*.err
