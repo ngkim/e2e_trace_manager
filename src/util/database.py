@@ -1,12 +1,6 @@
 from sqlalchemy import create_engine
 
-
-class TraceDatabase:
-
-    user="onebox"
-    password="onebox1234!"
-    host="211.224.204.203"
-    database="e2e_trace_manager"
+class Database:
     
     def __init__(self, db_host, db_name, db_user, db_pass):
         self.db_host = db_host
@@ -21,5 +15,18 @@ class TraceDatabase:
     
     def get_engine(self):        
         return self.dbengine
+
+class TraceDatabase(Database):
+
+    user="onebox"
+    password="onebox1234!"
+    host="211.224.204.203"
+    database="e2e_trace_manager"
+    
+    def __init__(self, db_host=host, db_name=database, db_user=user, db_pass=password):
+        Database.__init__(db_host, db_name, db_user, db_pass)
+        
+    
+    
 
         

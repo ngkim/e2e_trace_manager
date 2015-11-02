@@ -4,15 +4,11 @@ import jsonpickle
 from util.database import TraceDatabase
 from trace import Trace
 
-
-# POST USAGE:
-# curl -v http://localhost:8888/ -X POST --data-binary '{"traceseq": 1, "customerseq": 100, "title": "post-test", "mainclass":"monitoring-manager", "subclass":"orchestrator-m" }' -H "Content-type: application/json"
-       
-class TraceHandler(RequestHandler):
+class StepHandler(RequestHandler):
+    
     def initialize(self, logger):        
         self.logger=logger
-        #sudo -u postgres psql -d e2e_trace_manager -c "select * from tb_e2e_trace_list"
-        #self.dbm = dbManager('e2e_trace_manager', 'e2e_trace_manager', 'nfv', 'ohhberry3333', '211.224.204.203', '5432')
+        
         traceDB = TraceDatabase()        
         self.dbengine = traceDB.get_engine()
     
@@ -39,5 +35,3 @@ class TraceHandler(RequestHandler):
                         VALUES (       %d,           %d,    '%s',       now())" % (trace.traceseq, trace.customerseq, trace.title)
         self.logger.info("traceAddSql= %s" % traceAddSql)
         self.dbengine.execute(traceAddSql)
-        
-        
