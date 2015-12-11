@@ -2,7 +2,7 @@ from tornado.web import RequestHandler
 import jsonpickle
 
 from util.database import TraceDatabase
-from trace import Trace
+from trace import Trace, StepSql, Step
 
 class StepHandler(RequestHandler):
     
@@ -16,7 +16,7 @@ class StepHandler(RequestHandler):
         for row in records:
             print "trace_seq= %s customer_seq= %s trace_title= %s create_dttm= %s\n" % (row['trace_seq'], row['customer_seq'], row['trace_title'], row['create_dttm'])
     
-    def get(self):
+    def get(self, trace_seq):
         trace = Trace(1, 100, 'test', 'monitoring-manager', 'orchestrator-m')
         data_string= jsonpickle.encode(trace)
         self.write(data_string)
@@ -25,13 +25,34 @@ class StepHandler(RequestHandler):
         records = self.dbengine.execute(traceSelectSql)
         self.print_result(records)
                 
-    def post(self):
-        self.logger.info('POST= %s' % self.request.body)
+    def post(self, trace_seq):
+        stepReq = jsonpickle.decode(self.request.body)
         
-        traceReq = jsonpickle.decode(self.request.body)
-        trace = Trace(traceReq['traceseq'], traceReq['customerseq'], traceReq['title'], traceReq['mainclass'], traceReq['subclass'])
+        stepSql = StepSql()
+        sql=stepSql.get_max_seq(trace_seq)
+        records = self.dbengine.execute(sql)
         
-        traceAddSql = "INSERT INTO tb_e2e_trace_list (trace_seq, customer_seq, trace_title, create_dttm) \
-                        VALUES (       %d,           %d,    '%s',       now())" % (trace.traceseq, trace.customerseq, trace.title)
-        self.logger.info("traceAddSql= %s" % traceAddSql)
-        self.dbengine.execute(traceAddSql)
+        result="0"
+        for row in records:
+            result=row['seq']
+        
+        if((result == None) or (result == "")):
+            seq = 0
+        else:
+            seq = int(result)
+        stepseq=seq+1        
+        self.logger.info("stepseq= %d" % stepseq)        
+        
+        title=stepReq['title']
+        mainclass=stepReq['mainclass']
+        subclass=stepReq['subclass']        
+        
+        step = Step(stepseq, trace_seq, title, mainclass, subclass, "", "")
+        addStepSql = stepSql.add(step)
+        self.logger.info("addStepSql= %s" % addStepSql)
+        
+        self.dbengine.execute(addStepSql)
+        
+        
+        
+        

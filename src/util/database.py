@@ -24,7 +24,7 @@ class TraceDatabase(Database):
     database="e2e_trace_manager"
     
     def __init__(self, db_host=host, db_name=database, db_user=user, db_pass=password):
-        Database.__init__(db_host, db_name, db_user, db_pass)
+        Database.__init__(self, db_host, db_name, db_user, db_pass)
         
     
     

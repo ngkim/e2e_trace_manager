@@ -20,7 +20,7 @@ log = logger(tag="E2E Trace Manager", logdir="./log/", loglevel="debug", logCons
 
 application = tornado.web.Application([
     (r"/", TraceHandler, dict(logger=log)),
-    (r"/step", StepHandler, dict(logger=log))
+    (r"/step/([0-9]+)", StepHandler, dict(logger=log))
 ])
 
 def sig_handler(signum, frame):
