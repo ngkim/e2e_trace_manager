@@ -16,7 +16,7 @@ from handlers.step_handler import StepHandler
 
 from util.ko_logger import ko_logger as logger
 
-log = logger(tag="E2E Trace Manager", logdir="./log/", loglevel="debug", logConsole=False).get_instance()
+log = logger(tag="E2E Trace Manager", logdir="../log/", loglevel="debug", logConsole=False).get_instance()
 
 application = tornado.web.Application([
     (r"/", TraceHandler, dict(logger=log)),

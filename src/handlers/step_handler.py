@@ -1,8 +1,9 @@
 from tornado.web import RequestHandler
 import jsonpickle
 
-from util.database import TraceDatabase
-from trace import Trace, StepSql, Step
+from db.database import TraceDatabase
+from db.trace import Trace
+from db.step import StepSql, Step
 
 class StepHandler(RequestHandler):
     

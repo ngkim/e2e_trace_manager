@@ -1,7 +1,7 @@
 from tornado.web import RequestHandler
 import jsonpickle
 
-from util.database import TraceDatabase
+from db.database import TraceDatabase
 from trace import Trace
 
 
